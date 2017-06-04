@@ -8,7 +8,7 @@ module OpenSSLHelper
     def initialize(data_bag, data_bag_item, root_subject)
       @dbag = Dbag::Keystore.new(data_bag, data_bag_item)
       @root_subject = OpenSSL::X509::Name.new(root_subject)
-      @root_data_bag_key = Base64.encode64(@root_subject.to_s)
+      @root_data_bag_key = Base64.encode64(@root_subject.to_s.chomp)
     end
 
 
