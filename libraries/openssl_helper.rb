@@ -12,8 +12,12 @@ module OpenSSLHelper
     end
 
 
-    def generate_key
+    def self.generate_key
       OpenSSL::PKey::RSA.new(2048)
+    end
+
+    def self.generate_dn
+      OpenSSL::PKey::DH.new(2048)
     end
 
     def root_ca
@@ -84,7 +88,7 @@ module OpenSSLHelper
       return @root_key unless @root_key.nil?
 
       k = get_or_create_dbag("root-ca-#{@root_data_bag_key}-key") {
-        generate_key.to_pem
+        self.class.generate_key.to_pem
       }
 
       @root_key = OpenSSL::PKey::RSA.new(k)
