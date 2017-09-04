@@ -11,6 +11,13 @@ module OpenSSLHelper
       @root_data_bag_key = Base64.encode64(@root_subject.to_s).chomp
     end
 
+    def generate_key
+      OpenSSL::PKey::RSA.new(2048)
+    end
+
+    def generate_dn
+      OpenSSL::PKey::DH.new(2048)
+    end
 
     def self.generate_key
       OpenSSL::PKey::RSA.new(2048)
@@ -88,7 +95,7 @@ module OpenSSLHelper
       return @root_key unless @root_key.nil?
 
       k = get_or_create_dbag("root-ca-#{@root_data_bag_key}-key") {
-        self.class.generate_key.to_pem
+        generate_key.to_pem
       }
 
       @root_key = OpenSSL::PKey::RSA.new(k)
